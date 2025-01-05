@@ -28,7 +28,7 @@ def create_task():
     new_task = Task(id=task_id_control, title=data['title'], description=data.get("description", ""))
     task_id_control += 1
     tasks.append(new_task)
-    return jsonify({"Message": "Nova Tarefa criada com sucesso"}), 201
+    return jsonify({"message": "Nova Tarefa criada com sucesso", "id":new_task.id}),201
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
@@ -37,7 +37,7 @@ def get_tasks():
         "tasks": task_list,
         "total_tasks": len(task_list)
     }
-    return jsonify(output)
+    return jsonify(output),201
 
 @app.route('/tasks/<int:id>', methods=['GET'])
 def get_task(id):
@@ -61,7 +61,7 @@ def update_tasks(id):
     task.description = data.get("description", task.description)  # Mesma lógica para description
     task.completed = data.get("completed", task.completed)  # Se não enviar "completed", mantém o valor atual
 
-    return jsonify({"Message": "Tarefa atualizada com sucesso"}), 200
+    return jsonify({"message": "Tarefa atualizada com sucesso"}), 201
 
 @app.route('/tasks/<int:id>', methods=['DELETE'])
 def delete_task(id):
@@ -75,7 +75,7 @@ def delete_task(id):
         return jsonify({"Message": "Tarefa não encontrada"}), 404
 
     tasks.remove(task)
-    return jsonify({"Message": "Tarefa removida com sucesso"}), 200  # Código de status 200 OK
+    return jsonify({"message": "Tarefa removida com sucesso"}), 201  # Código de status 200 OK
 
 if __name__ == "__main__":
     app.run(debug=True)
